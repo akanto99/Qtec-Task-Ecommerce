@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_qtec_ecommerce/bloc/products/products_bloc.dart';
 import 'package:task_qtec_ecommerce/configs/utils/routes/routes.dart';
 import 'package:task_qtec_ecommerce/configs/utils/routes/routes_name.dart';
 
@@ -11,11 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      initialRoute: RoutesName.splash,
-      onGenerateRoute: Routes.generateRoute,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => ProductsBloc()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.light(),
+        initialRoute: RoutesName.splash,
+        onGenerateRoute: Routes.generateRoute,
+      ),
     );
   }
 }

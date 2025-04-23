@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Container(
           height: screenHeight,
           width: screenWidth,
-          decoration: BoxDecoration(
+          decoration: BoxDecoration( 
             gradient:LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
