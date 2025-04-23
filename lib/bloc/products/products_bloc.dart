@@ -12,7 +12,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductsBloc() : super(const ProductsState()) {
     on<ProductsFetch>(fetchProductstApi);
     on<SearchItem>(_searchItem);
-
+    on<SortProducts>(_onSortProducts);
   }
 
   Future<void> fetchProductstApi(ProductsFetch event, Emitter<ProductsState> emit) async {
@@ -38,5 +38,25 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   }
 
 
+  void _onSortProducts(SortProducts event, Emitter<ProductsState> emit) {
+    final currentList = state.searchProductsList.isNotEmpty
+        ? state.searchProductsList
+        : state.products;
 
+    final sortedList = List<ProductsModel>.from(currentList);
+
+    switch (event.sortType) {
+      case SortType.priceHighToLow:
+        sortedList.sort((a, b) => b.price!.compareTo(a.price!));
+        break;
+      case SortType.priceLowToHigh:
+        sortedList.sort((a, b) => a.price!.compareTo(b.price!));
+        break;
+      case SortType.bestRating:
+        sortedList.sort((a, b) => b.rating!.rate!.compareTo(a.rating!.rate!));
+        break;
+    }
+
+    emit(state.copyWith(tempSearchProductsList: sortedList));
+  }
 }

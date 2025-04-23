@@ -16,3 +16,10 @@ class SearchItem extends ProductsEvent {
 class FetchPostWithLazyLoading extends ProductsEvent {}
 
 
+enum SortType { priceHighToLow, priceLowToHigh, bestRating }
+
+class SortProducts extends ProductsEvent {
+  final SortType sortType;
+
+  SortProducts(this.sortType);
+}
