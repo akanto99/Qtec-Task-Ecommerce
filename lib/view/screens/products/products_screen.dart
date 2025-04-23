@@ -35,12 +35,42 @@ class _ProductsScreenState extends State<ProductsScreen> {
               if (state.products.isEmpty) {
                 return const Center(child: Text("No products found"));
               }
-              return ListView.builder(
-                itemCount: state.products.length,
-                itemBuilder: (context, index) {
-                  final item = state.products[index];
-                  return Card(child: ListTile(title: Text(item.title ?? 'No Title')));
-                },
+              return Column(
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        hintText: 'Search by category',
+                        border: OutlineInputBorder()
+                    ),
+                    onChanged: (value){
+                      context.read<ProductsBloc>().add(SearchItem(value));
+                    },
+                  ),
+                  Expanded(
+                    child: state.searchMessage.isNotEmpty ?
+                    Center(child: Text(state.searchMessage.toString())) :
+                    ListView.builder(
+                      itemCount: state.searchProductsList.isEmpty ?  state.products.length : state.searchProductsList.length ,
+                      itemBuilder: (BuildContext context, int index) {
+                        if(state.searchProductsList.isNotEmpty){
+                          return Card(
+                            child: ListTile(
+                              title: Text(state.searchProductsList[index].title.toString()),
+                              subtitle: Text(state.searchProductsList[index].category.toString()),
+                            ),
+                          );
+                        }else {
+                          return Card(
+                            child: ListTile(
+                              title: Text(state.products[index].title.toString()),
+                              subtitle: Text(state.products[index].category.toString()),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
               );
           }
         },
