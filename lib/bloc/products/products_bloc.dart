@@ -12,6 +12,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductsBloc() : super(const ProductsState()) {
     on<ProductsFetch>(fetchProductstApi);
     on<SearchItem>(_searchItem);
+
   }
 
   Future<void> fetchProductstApi(ProductsFetch event, Emitter<ProductsState> emit) async {
@@ -35,4 +36,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       }
     }
   }
+
+
+
 }

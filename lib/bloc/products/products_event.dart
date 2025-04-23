@@ -14,3 +14,5 @@ class SearchItem extends ProductsEvent {
 
 
 class FetchPostWithLazyLoading extends ProductsEvent {}
+
+

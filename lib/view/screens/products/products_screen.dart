@@ -29,7 +29,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
               return const Center(child: CircularProgressIndicator());
             case ProductsStatus.failure:
               return Center(
-                  child: Text(state.message ?? "Something went wrong"));
+                child: Text(state.message ?? "Something went wrong"),
+              );
             case ProductsStatus.success:
               if (state.products.isEmpty) {
                 return const Center(child: Text("No products found"));
@@ -38,9 +39,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 itemCount: state.products.length,
                 itemBuilder: (context, index) {
                   final item = state.products[index];
-                  return ListTile(
-                    title: Text(item.title ?? 'No Title'),
-                  );
+                  return Card(child: ListTile(title: Text(item.title ?? 'No Title')));
                 },
               );
           }
