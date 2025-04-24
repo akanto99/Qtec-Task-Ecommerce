@@ -13,6 +13,9 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     on<ProductsFetch>(fetchProductstApi);
     on<SearchItem>(_searchItem);
     on<SortProducts>(_onSortProducts);
+
+///Fetch api then Stored in DB then return from DB
+    on<ProductsFetchedFromLocal>(_onProductsFetchedFromLocal);
   }
 
   Future<void> fetchProductstApi(ProductsFetch event, Emitter<ProductsState> emit) async {
@@ -58,5 +61,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     }
 
     emit(state.copyWith(tempSearchProductsList: sortedList));
+  }
+
+
+  void _onProductsFetchedFromLocal(ProductsFetchedFromLocal event, Emitter<ProductsState> emit) {
+    emit(state.copyWith(status: ProductsStatus.success, productsList: event.products, message: 'Loaded from local DB'));
   }
 }

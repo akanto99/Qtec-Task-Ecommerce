@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:task_qtec_ecommerce/model/products/products_model.dart';
 
 abstract class ProductsEvent extends Equatable{
   @override
@@ -22,4 +23,12 @@ class SortProducts extends ProductsEvent {
   final SortType sortType;
 
   SortProducts(this.sortType);
+}
+
+
+
+class ProductsFetchedFromLocal extends ProductsEvent {
+  final List<ProductsModel> products;
+
+  ProductsFetchedFromLocal(this.products);
 }
