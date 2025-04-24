@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_qtec_ecommerce/bloc/products/products_bloc.dart';
 import 'package:task_qtec_ecommerce/bloc/products/products_event.dart';
 import 'package:task_qtec_ecommerce/bloc/products/products_state.dart';
+import 'package:task_qtec_ecommerce/configs/services/pagination_services.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -13,6 +14,8 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   bool isSearchActive = false;
+  int _currentPage = 1;
+  final int _itemsPerPage = 10;
 
   @override
   void initState() {
@@ -30,87 +33,91 @@ class _ProductsScreenState extends State<ProductsScreen> {
             case ProductsStatus.initial:
               return const Center(child: CircularProgressIndicator());
             case ProductsStatus.failure:
-              return Center(
-                child: Text(state.message ?? "Something went wrong"),
-              );
+              return Center(child: Text(state.message ?? "Something went wrong"));
             case ProductsStatus.success:
-              if (state.products.isEmpty) {
-                return const Center(child: Text("No products found"));
-              }
+              final isSearching = isSearchActive && state.searchProductsList.isNotEmpty;
+              final allItems = isSearching ? state.searchProductsList : state.products;
+
+              // Pagination calculation
+              final totalItems = allItems.length;
+              final totalPages = (totalItems / _itemsPerPage).ceil();
+              final startIndex = (_currentPage - 1) * _itemsPerPage;
+              final endIndex = (_currentPage * _itemsPerPage).clamp(0, totalItems);
+              final paginatedItems = isSearching ? allItems : allItems.sublist(startIndex, endIndex);
+
               return Column(
                 children: [
                   isSearchActive
                       ? Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              autofocus: true,
-                              decoration: const InputDecoration(
-                                hintText: 'Search by category',
-                                border: OutlineInputBorder(),
-                              ),
-                              onChanged: (value) {
-                                context.read<ProductsBloc>().add(
-                                  SearchItem(value),
-                                );
-                              },
-                            ),
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            hintText: 'Search by category',
+                            border: OutlineInputBorder(),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.filter_list),
-                            onPressed: () {
-                              _showSortBottomSheet(context);
-                            },
-                          ),
-                        ],
-                      )
-                      : GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isSearchActive = true;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            enabled: false,
-                            decoration: const InputDecoration(
-                              hintText: 'Search by category',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
+                          onChanged: (value) {
+                            context.read<ProductsBloc>().add(SearchItem(value));
+                          },
                         ),
                       ),
-                  Expanded(
-                    child:
-                        state.searchMessage.isNotEmpty
-                            ? Center(
-                              child: Text(state.searchMessage.toString()),
-                            )
-                            : ListView.builder(
-                              itemCount:
-                                  state.searchProductsList.isNotEmpty
-                                      ? state.searchProductsList.length
-                                      : state.products.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final product =
-                                    state.searchProductsList.isNotEmpty
-                                        ? state.searchProductsList[index]
-                                        : state.products[index];
-                                return Card(
-                                  child: ListTile(
-                                    title: Text(product.title ?? 'No Title'),
-                                    subtitle: Text(
-                                      product.category ?? 'No Category',
-                                    ),
-                                    trailing: Text(
-                                      product.price?.toString() ?? 'No Price',
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                      IconButton(
+                        icon: const Icon(Icons.filter_list),
+                        onPressed: () => _showSortBottomSheet(context),
+                      ),
+                    ],
+                  )
+                      : GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isSearchActive = true;
+                        _currentPage = 1; // Reset page when search starts
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        enabled: false,
+                        decoration: const InputDecoration(
+                          hintText: 'Search by category',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
                   ),
+                  if (state.searchMessage.isNotEmpty)
+                    Expanded(child: Center(child: Text(state.searchMessage))),
+                  if (state.searchMessage.isEmpty)
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: paginatedItems.length + 1, // +1 for footer
+                        itemBuilder: (context, index) {
+                          if (index < paginatedItems.length) {
+                            final product = paginatedItems[index];
+                            return Card(
+                              child: ListTile(
+                                title: Text(product.title ?? 'No Title'),
+                                subtitle: Text(product.category ?? 'No Category'),
+                                trailing: Text(product.price?.toString() ?? 'No Price'),
+                              ),
+                            );
+                          } else {
+                            return !isSearching
+                                ? PaginationWidget(
+                              currentPage: _currentPage,
+                              totalPages: totalPages,
+                              onPageChanged: (page) {
+                                setState(() {
+                                  _currentPage = page;
+                                });
+                              },
+                            )
+                                : const SizedBox(); // No pagination if searching
+                          }
+                        },
+                      ),
+                    ),
                 ],
               );
           }
@@ -131,9 +138,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               title: const Text("Price High to Low"),
               onTap: () {
                 Navigator.pop(context);
-                context.read<ProductsBloc>().add(
-                  SortProducts(SortType.priceHighToLow),
-                );
+                context.read<ProductsBloc>().add(SortProducts(SortType.priceHighToLow));
               },
             ),
             ListTile(
@@ -141,9 +146,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               title: const Text("Price Low to High"),
               onTap: () {
                 Navigator.pop(context);
-                context.read<ProductsBloc>().add(
-                  SortProducts(SortType.priceLowToHigh),
-                );
+                context.read<ProductsBloc>().add(SortProducts(SortType.priceLowToHigh));
               },
             ),
             ListTile(
@@ -151,9 +154,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               title: const Text("Best Rating"),
               onTap: () {
                 Navigator.pop(context);
-                context.read<ProductsBloc>().add(
-                  SortProducts(SortType.bestRating),
-                );
+                context.read<ProductsBloc>().add(SortProducts(SortType.bestRating));
               },
             ),
           ],
