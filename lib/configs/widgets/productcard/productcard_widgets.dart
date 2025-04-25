@@ -93,6 +93,36 @@ class _ProductCardWidgetsState extends State<ProductCardWidgets> {
                     ),
                   ),
                 ),
+
+                ///Out If stock
+                widget.ratingCount == "(430)"
+                    ? Positioned(
+                  top: 8,
+                  left: 8,
+                  child: Container(
+                    height: screenHeight * 0.032,
+                    width: screenWidth * 0.25,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.greyColor.withOpacity(0.5),
+                          blurRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Out Of Stock",
+                        style: AppTextStyles.inter14WithColor(
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
