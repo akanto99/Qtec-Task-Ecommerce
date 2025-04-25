@@ -13,6 +13,10 @@ class ProductsModel {
   String? image;
   Rating? rating;
 
+  int? offPrice;
+  double? discountPrice;
+
+
   ProductsModel({
     this.id,
     this.title,
@@ -21,6 +25,10 @@ class ProductsModel {
     this.category,
     this.image,
     this.rating,
+
+
+    this.offPrice,
+    this.discountPrice,
   });
 
   factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(

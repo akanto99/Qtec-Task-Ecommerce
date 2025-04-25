@@ -6,10 +6,12 @@ import '../color.dart';
 class RoundButton extends StatelessWidget {
 
   final String title ;
+  final Color color;
   final bool loading ;
   final VoidCallback onPress ;
   const RoundButton({Key? key ,
     required this.title,
+    required this.color,
     this.loading = false ,
      required this.onPress ,
 
@@ -23,10 +25,10 @@ class RoundButton extends StatelessWidget {
     return InkWell(
       onTap: onPress,
       child: Container(
-        height: screenHeight*0.06,
+        height: screenHeight*0.04,
         width: screenWidth*0.45,
         decoration: BoxDecoration(
-          color:AppColors.blackColor,
+          color:color,
           borderRadius: BorderRadius.circular(30)
         ),
         child: Center(
@@ -34,8 +36,8 @@ class RoundButton extends StatelessWidget {
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(color: Colors.white,)) :  AutoSizeText(title ,
-              style: GoogleFonts.poppins(
-              fontSize: 16,
+              style: GoogleFonts.inter(
+              fontSize: 14,
               fontWeight: FontWeight.w500,
               color: AppColors.whiteColor,
               letterSpacing: 0.8,

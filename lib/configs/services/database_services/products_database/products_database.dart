@@ -57,7 +57,7 @@ class ProductDatabase {
           'category': product.category,
           'image': product.image,
           'rate': product.rating?.rate,
-          'count': product.rating?.count,
+          'count': product.rating?.count
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -87,7 +87,7 @@ class ProductDatabase {
         rating: Rating(
           rate: json['rate'] as double?,
           count: json['count'] as int?,
-        ),
+        )
       );
     }).toList();
   }

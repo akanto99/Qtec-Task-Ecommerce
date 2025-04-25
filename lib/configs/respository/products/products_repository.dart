@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:http/http.dart'  as http;
 import 'package:task_qtec_ecommerce/configs/res/app_url.dart';
@@ -29,31 +30,6 @@ class ProductsRepository {
   //   }
   // }
 
-///Fetch Data From api and store it in Local DB SQFLite
-//   Future<void> fetchAndSyncProducts() async {
-//     try {
-//       final response = await http
-//           .get(Uri.parse(AppUrl.productEndPoint))
-//           .timeout(const Duration(seconds: 30));
-//
-//       if (response.statusCode == 200) {
-//         final List<ProductsModel> fetchedProducts =
-//         productsModelFromJson(response.body);
-//
-//         // Sync to local DB (Step 3 explained below)
-//         await ProductDatabase.instance.syncProducts(fetchedProducts);
-//
-//       } else {
-//         throw Exception('Failed to load products');
-//       }
-//     } on SocketException {
-//       throw Exception('No Internet Connection');
-//     } on TimeoutException {
-//       throw Exception('Request Timed Out');
-//     } catch (e) {
-//       throw Exception('Unexpected Error: $e');
-//     }
-//   }
 
 
   Future<List<ProductsModel>> fetchProducts() async {
@@ -66,16 +42,20 @@ class ProductsRepository {
         final List<ProductsModel> fetchedProducts =
         productsModelFromJson(response.body);
 
-        // Sync to local DB
+        for (var product in fetchedProducts) {
+          product.offPrice = getRandomOffPrice();
+          product.discountPrice = applyDiscount(product.price ?? 0.0);
+        }
+        ///Sync to local DB
         await ProductDatabase.instance.syncProducts(fetchedProducts);
 
-        // ✅ Return the list
+        /// Return the list
         return fetchedProducts;
       } else {
         throw Exception('Failed to load products');
       }
     } on SocketException {
-      throw ('No Internet Connection');
+      throw Exception('NO_INTERNET');
     } on TimeoutException {
       throw Exception('Request Timed Out');
     } catch (e) {
@@ -83,5 +63,18 @@ class ProductsRepository {
     }
   }
 
+  ///Random offprice
+  List<ProductsModel> products = [];
+  final List<int> offPrices = [10, 15, 20, 25];
+  final Random random = Random();
+  int getRandomOffPrice() {
+    return offPrices[random.nextInt(offPrices.length)];
+  }
+
+  ///Discount Dollar
+  double applyDiscount(double price) {
+    final discount = 5 + random.nextInt(6);
+    return price - discount;
+  }
 
 }

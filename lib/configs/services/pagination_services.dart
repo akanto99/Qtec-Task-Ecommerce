@@ -1,39 +1,7 @@
-// class Pagination<T> {
-//   final List<T> items;
-//   final int itemsPerPage;
-//   int _currentPage = 1;
-//
-//   Pagination({required this.items, this.itemsPerPage = 10});
-//
-//   int get currentPage => _currentPage;
-//
-//   int get totalPages => (items.length / itemsPerPage).ceil();
-//
-//   List<T> get currentItems {
-//     final startIndex = (_currentPage - 1) * itemsPerPage;
-//     final endIndex = (startIndex + itemsPerPage).clamp(0, items.length);
-//     return items.sublist(startIndex, endIndex);
-//   }
-//
-//   void nextPage() {
-//     if (_currentPage < totalPages) _currentPage++;
-//   }
-//
-//   void previousPage() {
-//     if (_currentPage > 1) _currentPage--;
-//   }
-//
-//   void goToPage(int page) {
-//     if (page >= 1 && page <= totalPages) {
-//       _currentPage = page;
-//     }
-//   }
-//
-//   bool get hasNext => _currentPage < totalPages;
-//
-//   bool get hasPrevious => _currentPage > 1;
-// }
 import 'package:flutter/material.dart';
+import 'package:task_qtec_ecommerce/configs/res/color.dart';
+import 'package:task_qtec_ecommerce/configs/res/components/round_button.dart';
+import 'package:task_qtec_ecommerce/configs/res/text_styles.dart';
 
 class PaginationWidget extends StatelessWidget {
   final int currentPage;
@@ -49,24 +17,32 @@ class PaginationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (currentPage > 1)
-            TextButton(
-              onPressed: () => onPageChanged(currentPage - 1),
-              child: const Text("Previous"),
-            ),
-          Text("Page $currentPage of $totalPages"),
-          if (currentPage < totalPages)
-            TextButton(
-              onPressed: () => onPageChanged(currentPage + 1),
-              child: const Text("Next"),
-            ),
-        ],
-      ),
+    final screenHeight = MediaQuery.of(context).size.height *1;
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Column(
+      children: [
+
+        Row(
+          children: [
+            if (currentPage > 1)
+              RoundButton(
+                title: "Previous",
+                color: Colors.black,
+                onPress: () => onPageChanged(currentPage - 1),
+              ),
+            SizedBox(width: screenWidth*0.1,),
+            Text("Page $currentPage of $totalPages",style: AppTextStyles.inter18WithColor(color: AppColors.blackColor),),
+            SizedBox(width: screenWidth*0.1,),
+            if (currentPage < totalPages)
+              RoundButton(
+                title: "Next",
+                color: Colors.blueAccent,
+                onPress: () =>  onPageChanged(currentPage + 1),
+              ),
+             
+          ],
+        ),
+      ],
     );
   }
 }

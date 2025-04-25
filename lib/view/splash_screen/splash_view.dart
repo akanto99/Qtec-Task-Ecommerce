@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               Text(
                 'WITH US',
-             style:AppTextStyles.poppins12Regular,
+             style:AppTextStyles.inter12Regular,
               ),
               SizedBox(height: screenHeight*0.02),
               Container(
