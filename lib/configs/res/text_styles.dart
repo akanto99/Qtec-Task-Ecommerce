@@ -19,9 +19,9 @@ class AppTextStyles {
   );
 
   /// Custom method to allow manual color customization
-  static TextStyle poppins13WithColor({ required Color color}) {
-    return GoogleFonts.poppins(
-      fontSize: 13,
+  static TextStyle poppins14WithColor({ required Color color}) {
+    return GoogleFonts.inter(
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: color,
 

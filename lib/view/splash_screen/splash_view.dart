@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:task_qtec_ecommerce/configs/res/color.dart';
 import 'package:task_qtec_ecommerce/configs/res/text_styles.dart';
 import 'package:task_qtec_ecommerce/configs/services/splash_services.dart';
@@ -53,11 +54,16 @@ class _SplashScreenState extends State<SplashScreen> {
               SizedBox(height: screenHeight*0.01),
               Text(
                 'KEEP IN TOUCH',
-                style:AppTextStyles.poppins13WithColor(color: AppColors.blackColor),
+                style:AppTextStyles.poppins14WithColor(color: AppColors.blackColor),
               ),
               Text(
                 'WITH US',
-             style:AppTextStyles.inter12Regular,
+             style: GoogleFonts.inter(
+                 fontSize: 12,
+                 fontWeight: FontWeight.w400,
+                 color: AppColors.blackColor
+
+             ),
               ),
               SizedBox(height: screenHeight*0.02),
               Container(
