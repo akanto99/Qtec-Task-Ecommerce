@@ -24,7 +24,7 @@ class SearchBoxWidget extends StatelessWidget {
       width: width,
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: AppColors.greyColor,
           width: 0.5,
@@ -40,12 +40,10 @@ class SearchBoxWidget extends StatelessWidget {
           ),
           // prefixIcon:  Icon(CupertinoIcons.search,color: AppColors.blackColor.withOpacity(0.8),),
           prefixIcon: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(11.0),
             child: SvgPicture.asset(
               'assets/images/icons/search.svg',
               color: AppColors.blackColor.withOpacity(0.8),
-              height: 15,
-              width: 15,
             ),
           ),
 
