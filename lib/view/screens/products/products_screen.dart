@@ -100,10 +100,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 final totalItems = allItems.length;
                 final totalPages = (totalItems / _itemsPerPage).ceil();
                 final startIndex = (_currentPage - 1) * _itemsPerPage;
-                final endIndex = (_currentPage * _itemsPerPage).clamp(
-                  0,
-                  totalItems,
-                );
+                final endIndex = (_currentPage * _itemsPerPage).clamp(0, totalItems,);
                 final paginatedItems =
                     isSearching
                         ? allItems
@@ -157,7 +154,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     SizedBox(height: screenHeight * 0.02),
 
                     /// Display total matching search results
-                    if (isSearchActive)
+                    if (isSearchActive && state.searchMessage.isEmpty)
                       Text(
                         '${state.searchProductsList.length} items',
                         style: AppTextStyles.inter12WithColor(
@@ -167,7 +164,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     if (isSearchActive) SizedBox(height: screenHeight * 0.02),
 
                     if (state.searchMessage.isNotEmpty)
-                      Expanded(child: Center(child: Text(state.searchMessage))),
+                      SearchMessageWidget(message: state.searchMessage,),
+
+
+
                     if (state.searchMessage.isEmpty)
                       Expanded(
                         child: ListView(

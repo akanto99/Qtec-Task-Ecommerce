@@ -33,7 +33,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       tempProductsList = state.products.where((element) => element.category.toString().toLowerCase().toString().contains(event.stSearch.toString().toLowerCase())).toList();
       // tempPostList = state.posts.where((map)=>map.userId.toString() == event.stSearch).toList();
       if (tempProductsList.isEmpty) {
-        emit(state.copyWith(tempSearchProductsList: tempProductsList, searchMessage: 'No data found'));
+        emit(state.copyWith(tempSearchProductsList: tempProductsList, searchMessage: 'No items found'));
       } else {
         emit(state.copyWith(tempSearchProductsList: tempProductsList, searchMessage: ''));
       }

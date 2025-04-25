@@ -60,3 +60,33 @@ class SearchBoxWidget extends StatelessWidget {
     );
   }
 }
+
+
+class SearchMessageWidget extends StatelessWidget {
+  final String message;
+
+  const SearchMessageWidget({
+    Key? key,
+    required this.message,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.query_stats_outlined,
+            color: Colors.red,
+            size: 45,
+          ),
+          SizedBox(height:screenHeight * 0.02),
+          Text(message, style: AppTextStyles.inter16WithColor(color: AppColors.blackColor),
+            textAlign: TextAlign.center,),
+        ],
+      ),
+    );
+  }
+}
