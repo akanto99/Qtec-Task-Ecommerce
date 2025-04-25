@@ -6,7 +6,7 @@ A clean architecture Flutter application that demonstrates fetching, caching, an
 
 ### ✅ Core Features
 - 🔰 **Splash Screen**: A splash screen on app startup.
-- 📦 **Product List**:
+- 📦 **Product List & Pagination**:
   - Data fetched from API using Repository pattern.
   - Pagination simulated with "Page 2" data.
 - 🔎 **Search**:
@@ -29,19 +29,19 @@ A clean architecture Flutter application that demonstrates fetching, caching, an
 ## 📷 Screenshots:
 
 ### 🔹 Splash Screen
-![Splash Screen]([image](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/splash.jpg))
+![image alt](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/splash.jpg?raw=true)
 
 ### 🔹 Product List & Pagination (Online)
-![Product List]([image](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/product.jpg))
+![image alt](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/product.jpg?raw=true)
 
 ### 🔹 Offline Mode (Cached Data)
-![Offline Mode]([image](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/dbbrock.jpeg))
+![image alt](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/dbbrock.jpeg?raw=true)
 
 ### 🔹 Search Functionality
-![Search]([image](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/search.jpeg))
+![image alt](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/search.jpeg?raw=true)
 
 ### 🔹 Sorting (Price & Rating)
-![Sorting]([image](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/sort.jpeg))
+![image alt](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/sort.jpeg?raw=true)
 
-### 🔹 Offline Snackbar Notification
-![Snackbar]([image](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/nointerPro.jpg))
+### 🔹 Offline Flushbar Notification
+![image alt](https://github.com/akanto99/Qtec-Task-Ecommerce/blob/main/assets/screenshot/nointerPro.jpg?raw=true)
