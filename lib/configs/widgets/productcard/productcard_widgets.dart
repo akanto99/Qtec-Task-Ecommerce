@@ -41,7 +41,7 @@ class _ProductCardWidgetsState extends State<ProductCardWidgets> {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: const Color(0xffD5D6DE),
+             color: AppColors.greyColor,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(5),
@@ -87,7 +87,7 @@ class _ProductCardWidgetsState extends State<ProductCardWidgets> {
                         child: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           size: 18,
-                          color: isFavorite ? Colors.red :Colors.grey,
+                          color: isFavorite ? Colors.red :  AppColors.greyColor,
                         ),
                       ),
                     ),

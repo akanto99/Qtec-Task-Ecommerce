@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_qtec_ecommerce/configs/res/color.dart';
 import 'package:task_qtec_ecommerce/configs/res/text_styles.dart';
 
@@ -25,7 +26,7 @@ class SearchBoxWidget extends StatelessWidget {
         color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-         color: Colors.grey.withOpacity(0.5),
+          color: AppColors.greyColor,
           width: 0.5,
         ),
       ),
@@ -35,9 +36,19 @@ class SearchBoxWidget extends StatelessWidget {
         decoration: InputDecoration(
           hintText: 'Search Anything...',
           hintStyle: AppTextStyles.inter18WithColor(
-            color: AppColors.blackColor.withOpacity(0.2),
+            color: AppColors.greyColor,
           ),
-          prefixIcon:  Icon(CupertinoIcons.search,color: AppColors.blackColor.withOpacity(0.8),),
+          // prefixIcon:  Icon(CupertinoIcons.search,color: AppColors.blackColor.withOpacity(0.8),),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: SvgPicture.asset(
+              'assets/images/icons/search.svg',
+              color: AppColors.blackColor.withOpacity(0.8),
+              height: 15,
+              width: 15,
+            ),
+          ),
+
           border: const OutlineInputBorder(
             borderSide: BorderSide.none,
           ),

@@ -13,6 +13,9 @@ import 'package:task_qtec_ecommerce/configs/res/text_styles.dart';
 import 'package:task_qtec_ecommerce/configs/responsive/responsive_ui.dart';
 import 'package:task_qtec_ecommerce/configs/services/database_services/products_database/products_database.dart';
 import 'package:task_qtec_ecommerce/configs/services/pagination_services.dart';
+import 'package:task_qtec_ecommerce/configs/utils/utils.dart';
+import 'package:task_qtec_ecommerce/configs/widgets/loading/loading_wisgets.dart';
+import 'package:task_qtec_ecommerce/configs/widgets/nointernet/nointernet_widgets.dart';
 
 import 'dart:developer' as developer;
 
@@ -57,7 +60,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -78,11 +80,15 @@ class _ProductsScreenState extends State<ProductsScreen> {
           builder: (context, state) {
             switch (state.status) {
               case ProductsStatus.initial:
-                return const Center(child: CircularProgressIndicator());
+                return LoadingScreen();
               case ProductsStatus.failure:
-                return Center(
-                  child: Text(state.message ?? "Something went wrong"),
-                );
+                final isNoInternet =
+                    (state.message?.contains('NO_INTERNET') ?? false);
+                return isNoInternet
+                    ? NointernetWidgets()
+                    : Center(
+                      child: Text(state.message ?? "Something went wrong"),
+                    );
 
               case ProductsStatus.success:
                 final isSearching =
@@ -182,14 +188,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 return GestureDetector(
                                   onTap: () {
                                     if (!isConnected) {
-                                      ScaffoldMessenger.of(
+                                      Utils.flushBarErrorMessage(
+                                        "No Internet Connection",
                                         context,
-                                      ).showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            'No internet connection',
-                                          ),
-                                        ),
                                       );
                                     } else {
                                       print("internet available");
@@ -233,8 +234,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
       ),
     );
   }
-
-
 
   ///ShowModal Bottom Sheet
   void _showSortBottomSheet(BuildContext context) {
@@ -292,7 +291,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 child: Container(
                   height: screenHeight * 0.06,
                   width: screenWidth * 0.9,
-                  child: Text("Price - High to Low",style: AppTextStyles.inter14WithColor(color: AppColors.blackColor),),
+                  child: Text(
+                    "Price - High to Low",
+                    style: AppTextStyles.inter14WithColor(
+                      color: AppColors.blackColor,
+                    ),
+                  ),
                 ),
               ),
 
@@ -300,13 +304,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   context.read<ProductsBloc>().add(
-                    SortProducts(SortType.priceLowToHigh,),
+                    SortProducts(SortType.priceLowToHigh),
                   );
                 },
                 child: Container(
                   height: screenHeight * 0.06,
                   width: screenWidth * 0.9,
-                  child: Text("Price - Low to High",style: AppTextStyles.inter14WithColor(color: AppColors.blackColor),),
+                  child: Text(
+                    "Price - Low to High",
+                    style: AppTextStyles.inter14WithColor(
+                      color: AppColors.blackColor,
+                    ),
+                  ),
                 ),
               ),
 
@@ -320,7 +329,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 child: Container(
                   height: screenHeight * 0.06,
                   width: screenWidth * 0.9,
-                  child: Text("Ratting",style: AppTextStyles.inter14WithColor(color: AppColors.blackColor),),
+                  child: Text(
+                    "Ratting",
+                    style: AppTextStyles.inter14WithColor(
+                      color: AppColors.blackColor,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -330,14 +344,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
-
-///Network Connectivity Check and Condition Wise Data Fetching
+  ///Network Connectivity Check and Condition Wise Data Fetching
   Future<void> initConnectivity() async {
     late List<ConnectivityResult> results;
     try {
       results = await _connectivity.checkConnectivity();
       final result =
-      results.isNotEmpty ? results.first : ConnectivityResult.none;
+          results.isNotEmpty ? results.first : ConnectivityResult.none;
       _updateConnectionStatus(result);
 
       if (result != ConnectivityResult.none) {
@@ -363,6 +376,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       developer.log("Couldn't check connectivity status", error: e);
     }
   }
+
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     bool wasOffline = !isConnected;
     isConnected = result != ConnectivityResult.none;
@@ -373,12 +387,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
       });
     }
     if (wasOffline && isConnected) {
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductsScreen()));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProductsScreen()),
+      );
       debugPrint("Auto-refetching Products due to reconnection.");
     }
   }
-
-
-
-
 }
